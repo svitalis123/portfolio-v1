@@ -1,0 +1,157 @@
+---
+// imports
+import RenderIndividualBlog from "@/components/editor/EditorHomepage/RenderIndividualBlog";
+import BlogHeader from '@/components/shared/BlogHeader';
+import { MongoClient, ObjectId } from 'mongodb';
+
+export async function getStaticPaths() {
+  const client = new MongoClient(import.meta.env.MONGODB_URI);
+
+  try {
+    await client.connect();
+    const db = client.db("blogDatabase");
+    const collection = db.collection("posts");
+
+    const blogPosts = await collection.find({}).toArray();
+
+    return blogPosts.map((blogPost) => ({
+      params: { slug: blogPost._id.toString() },
+      props: { blogPost: JSON.parse(JSON.stringify(blogPost)) },
+    }));
+  } finally {
+    await client.close();
+  }
+}
+
+const { slug } = Astro.params;
+const { blogPost } = Astro.props;
+
+// Fetch the specific blog post data
+const client = new MongoClient(import.meta.env.MONGODB_URI);
+let data;
+
+try {
+  await client.connect();
+  const db = client.db("blogDatabase");
+  const collection = db.collection("posts");
+
+  data = await collection.findOne({ _id: new ObjectId(slug) });
+  
+  // Convert MongoDB document to plain object and stringify dates
+  data = JSON.parse(JSON.stringify(data));
+} finally {
+  await client.close();
+}
+
+console.log("Single blog data:", data);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{data.seoTitle || data.title}</title>
+    <meta name="description" content={data.seoDescription || data.excerpt} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={`https://yourdomain.com/blog/${data._id}`} />
+    <meta property="og:title" content={data.seoTitle || data.title} />
+    <meta property="og:description" content={data.seoDescription || data.excerpt} />
+    <meta property="og:image" content={'https://pbs.twimg.com/profile_images/1577206532160176128/qz_G5k4Z_400x400.jpg'} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={`https://x.com/WilsonVitalis`} />
+    <meta property="twitter:title" content={data.seoTitle || data.title} />
+    <meta property="twitter:description" content={data.seoDescription || data.excerpt} />
+    <meta property="twitter:image" content={'https://pbs.twimg.com/profile_images/1577206532160176128/qz_G5k4Z_400x400.jpg'} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={`https://yourdomain.com/blog/${data._id}`} />
+
+    <!-- Additional SEO tags -->
+    <meta name="author" content={data.author} />
+    <meta name="date" content={data.publishDate} />
+    {data.tags.length > 0 && (
+      <meta name="keywords" content={data.tags.join(', ')} />
+    )}
+  </head>
+  <body class="bg-[#201d1b] min-h-screen flex flex-col">
+    <BlogHeader />
+    <main class="flex-grow  "> <!-- Adjust these values based on your header height -->
+      <div class="container mx-auto px-4">
+        <RenderIndividualBlog blogData={data} client:load /> 
+      </div>
+    </main>
+  </body>
+</html>
+<!-- blogData={data} -->
+
+
+<!-- // export async function getStaticPaths() {
+  //   const blogPosts = [
+  //     {
+  //       title: "The Future of Artificial Intelligence",
+  //       id: "1",
+  //       image: "https://pro.aceternity.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1719716136369-59ecf938a911%3Fq%3D80%26w%3D3540%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&w=1080&q=75",
+  //       sections: [
+  //         {
+  //           id: "introduction",
+  //           title: "Introduction",
+  //           content:
+  //             "Artificial Intelligence (AI) has been rapidly evolving, transforming various aspects of our lives. From voice assistants to autonomous vehicles, AI is becoming increasingly integrated into our daily routines.",
+  //         },
+  //         {
+  //           id: "key-areas",
+  //           title: "Key Areas of AI Development",
+  //           content: [
+  //             {
+  //               subtitle: "Machine Learning",
+  //               items: ["Deep Learning", "Neural Networks"],
+  //             },
+  //             {
+  //               subtitle: "Natural Language Processing",
+  //               items: ["Speech Recognition", "Language Translation"],
+  //             },
+  //             {
+  //               subtitle: "Computer Vision",
+  //               items: ["Image Recognition", "Object Detection"],
+  //             },
+  //             {
+  //               subtitle: "Robotics",
+  //               items: ["Autonomous Robots", "Human-Robot Interaction"],
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           id: "ethical-considerations",
+  //           title: "Ethical Considerations",
+  //           content:
+  //             "As AI becomes more advanced and ubiquitous, several ethical considerations come to the forefront:\n\n1. Privacy and Data Protection\n2. Bias and Fairness\n3. Accountability\n4. Transparency\n5. Job Displacement",
+  //         },
+  //         {
+  //           id: "conclusion",
+  //           title: "Conclusion",
+  //           content:
+  //             "The future of Artificial Intelligence holds immense potential to revolutionize our world. As we continue to develop and integrate AI into various aspects of our lives, it's crucial to balance innovation with ethical considerations. By doing so, we can harness the power of AI to create a more efficient, sustainable, and equitable future for all.",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  
+  //   return blogPosts.map((blogPost) => {
+  //     return {
+  //       params: { slug: blogPost.id },
+  //       props: { blogPost },
+  //     };
+  //   });
+  // }
+  
+  // const { slug }: any = Astro.params;
+  // const { blogPost }: any = Astro.props;
+  // const proper = blogPosts;
+  // const data = proper.filter((dat: any) => parseInt(dat.id) === parseInt(slug));
+  // console.log("my sing blog", data); -->
+  

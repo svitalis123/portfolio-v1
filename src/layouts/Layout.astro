@@ -4,47 +4,60 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const author = "Vitalis Mutwiri"
+const date = new Date()
+const description = "I am Vitalis A frontend developer Throughout my career, I've had the privilege of contributing to diverse projects, each offering a unique challenge and opportunity for growth. This experience has allowed me to sharpen my skills and collaborate with a network of intelligent and driven professionals. Here's a brief overview"
+// Supports weights 200-800
+import '@fontsource-variable/plus-jakarta-sans';
+import '@/styles/global.css'
+import { motion, AnimatePresence } from 'framer-motion';
+import Header from '@/components/shared/Header';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={`https://yourdomain.com`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={'https://pbs.twimg.com/profile_images/1577206532160176128/qz_G5k4Z_400x400.jpg'} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={`https://x.com/WilsonVitalis`} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={'https://pbs.twimg.com/profile_images/1577206532160176128/qz_G5k4Z_400x400.jpg'} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={`https://yourdomain.com`} />
+
+    <!-- Additional SEO tags -->
+    <meta name="author" content={author} />
+    <!-- <meta name="date" content={date} /> -->
+    <meta name="keywords" content="software engineer developer front-end developer full-stack developer" />
 		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
-	</body>
+	
+		<AnimatePresence mode="wait">
+			<body>
+				<Header client:load />
+				<slot />
+			</body>
+		</AnimatePresence>
+	
 </html>
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
+body {
+  font-family: 'Plus Jakarta Sans Variable', sans-serif;
+	margin: 0%;
+	padding: 0%;
+}
 </style>
