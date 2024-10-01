@@ -7,9 +7,11 @@ import tailwind from '@astrojs/tailwind';
 
 import netlify from '@astrojs/netlify';
 
+import vercel from '@astrojs/vercel/serverless';
+
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  adapter: netlify(),
+  adapter: vercel(),
   integrations: [react(), tailwind()]
 });
