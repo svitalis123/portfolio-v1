@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 export const BlogPostSchema = {
   title: { type: String, required: true },
-  content: { type: String, required: true },
+  content: { type: String, required: true }, // the problem is here it should expect html
   excerpt: { type: String },
   tags: { type: [String], default: [] },
   categories: { type: [String], default: [] },

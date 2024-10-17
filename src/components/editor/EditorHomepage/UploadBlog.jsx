@@ -23,7 +23,7 @@ const EnhancedBlogUpload = () => {
     seoDescription: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(blogData)
   const handleInputChange = (field, value) => {
     setBlogData(prevData => ({
       ...prevData,

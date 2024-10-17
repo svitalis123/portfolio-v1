@@ -7,36 +7,57 @@ const parseBlogContent = (htmlContent) => {
   const sections = [];
   let currentSection = null;
 
+  const isHeading = (node) => {
+    return ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.tagName);
+  };
+
+  const createSection = (title, node) => {
+    if (currentSection) {
+      sections.push(currentSection);
+    }
+    currentSection = {
+      id: title.toLowerCase().replace(/\s+/g, '-'),
+      title: title,
+      content: [node.outerHTML]
+    };
+  };
+
   doc.body.childNodes.forEach((node) => {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.tagName === 'H1' || node.tagName === 'H2') {
-        if (currentSection) {
-          sections.push(currentSection);
-        }
-        currentSection = {
-          id: node.textContent.toLowerCase().replace(/\s+/g, '-'),
-          title: node.textContent,
-          content: []
-        };
+      if (isHeading(node)) {
+        // Create a new section for heading tags
+        createSection(node.textContent, node);
+      } else if (node.tagName === 'P' && node.querySelector('strong')) {
+        // Create a new section for <p> tags with <strong> child
+        const strongText = node.querySelector('strong').textContent;
+        createSection(strongText, node);
       } else if (currentSection) {
+        // Add the node to the current section
         currentSection.content.push(node.outerHTML);
+      } else {
+        // If no section has been started yet, create an "Introduction" section
+        currentSection = {
+          id: 'introduction',
+          title: 'Introduction',
+          content: [node.outerHTML]
+        };
       }
     }
   });
 
+  // Add the last section if it exists
   if (currentSection) {
     sections.push(currentSection);
   }
 
   return sections;
 };
-
 const RenderIndividualBlog = ({ blogData }) => {
   const [activeSection, setActiveSection] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [sections, setSections] = useState([]);
-
+  console.log("gottenr data ", blogData.content)
   useEffect(() => {
     setSections(parseBlogContent(blogData.content));
   }, [blogData.content]);
@@ -115,11 +136,10 @@ const RenderIndividualBlog = ({ blogData }) => {
                 )}
               </div>
             </div>
-
             {sections.map((section) => (
               <section key={section.id} id={section.id} className="mb-12 ">
                 <h2 className="text-2xl lg:text-3xl font-semibold mb-4 ">{section.title}</h2>
-                <div className=" space-y-4 " dangerouslySetInnerHTML={{ __html: section.content.join('') }}></div>
+                <div className=" space-y-4 " dangerouslySetInnerHTML={{ __html: section.content }}></div>
               </section>
             ))}
           </div>
