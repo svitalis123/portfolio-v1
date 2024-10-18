@@ -204,7 +204,7 @@ const EnhancedBlogUpload = () => {
           />
         </div>
         
-        <Button type="submit" className="w-full !mb-24" disabled={isLoading}>
+        <Button type="submit" className="w-full bg-[#31ac54] hover:bg-[#41b963] !mb-24" disabled={isLoading}>
           {isLoading ? 'Uploading...' : 'Upload Blog Post'}
         </Button>
       </div>
