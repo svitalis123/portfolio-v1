@@ -59,7 +59,7 @@ const TriangularRuler = () => (
 
 const ProjectSection = ({ project }) => {
   return (
-    <main className='panel w-screen h-screen p-8 '>
+    <main className='panel w-screen h-screen p-8' id='projects'>
     <section className="min-h-screen w-screen flex flex-col justify-center items-center p-8 relative">
       <motion.div className="absolute hidden md:block left-10 top-20 z-0"
         initial={{ opacity: 0, x: 50 }}
@@ -113,14 +113,17 @@ const ProjectSection = ({ project }) => {
           </motion.span>
         ))}
       </div>
-      <motion.button 
+      <motion.a 
+        href={project.link}
         className="neumorphic-button flex items-center px-6 py-3 rounded-full text-[#ecc7bc] bg-[#2a2624] transition-all duration-300 ease-in-out"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         Learn More
         <ChevronRight className="ml-2" />
-      </motion.button>
+      </motion.a>
+    
+      
     </section>
     </main>
   );

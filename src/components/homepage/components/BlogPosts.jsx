@@ -83,7 +83,7 @@ const TypewriterText = ({ text }) => {
 
 const BlogPosts = () => {
   return (
-    <div className="bg-[#201d1b] max-w-[1330px] mx-auto text-gray-100 p-4 sm:p-6 md:p-8">
+    <div id="blog" className="bg-[#201d1b] max-w-[1330px] mx-auto text-gray-100 p-4 sm:p-6 md:p-8">
       <h1 className="text-3xl sm:text-4xl font-bold mb-2">Blogs</h1>
       <p className="text-gray-300 mb-6 sm:mb-8">
         Discover insightful resources and expert advice from me.
