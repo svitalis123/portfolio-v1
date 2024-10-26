@@ -12,6 +12,7 @@ import '@fontsource-variable/plus-jakarta-sans';
 import '@/styles/global.css'
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/shared/Header';
+import ContactBar from '@/components/shared/ContactBar';
 ---
 
 <!doctype html>
@@ -50,6 +51,7 @@ import Header from '@/components/shared/Header';
 			<body>
 				<Header client:load />
 				<slot />
+        <ContactBar client:load /> 
 			</body>
 		</AnimatePresence>
 	
