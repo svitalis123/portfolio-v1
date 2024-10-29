@@ -9,9 +9,9 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-[#201d1b] text-[#ecc7bc] relative">
+    <div className="bg-[#201d1b]  text-[#ecc7bc] relative">
       {/* Navigation */}
-      <nav className="p-4 flex justify-between items-center">
+      <nav className="p-4 flex w-[98%] mx-auto justify-between items-center">
         <h1 className="text-2xl font-bold text-[#ecc7bc]">
           <a href="/" className="no-underline hover:no-underline">
             Vitalis
@@ -33,10 +33,10 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          <li><a href="#about" className="hover:text-primary transition-colors">About</a></li>
-          <li><a href="#projects" className="hover:text-primary transition-colors">Projects</a></li>
-          <li><a href="#blog" className="hover:text-primary transition-colors">Blog</a></li>
-          <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
+          <li><a href="/#about" className="hover:text-primary transition-colors">About</a></li>
+          <li><a href="/#projects" className="hover:text-primary transition-colors">Projects</a></li>
+          <li><a href="/#blog" className="hover:text-primary transition-colors">Blog</a></li>
+          {/* <li><a href="/#contact" className="hover:text-primary transition-colors">Contact</a></li> */}
         </ul>
       </nav>
 

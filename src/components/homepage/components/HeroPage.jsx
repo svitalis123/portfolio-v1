@@ -47,13 +47,15 @@ const HeroCarousel = () => {
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-4">{carouselItems[current].tagline}</h2>
           <p className="text-xl mb-6">{carouselItems[current].description}</p>
-          <motion.button 
-            className="bg-[#e34b3a] text-white px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Learn More
-          </motion.button>
+          <a href="/#projects">
+            <motion.button 
+              className="bg-[#e34b3a] text-white px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Learn More
+            </motion.button>
+          </a>
         </motion.div>
       </AnimatePresence>
       <AnimatePresence mode="wait">

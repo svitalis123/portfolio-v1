@@ -78,7 +78,7 @@ console.log("Single blog data:", data);
       <meta name="keywords" content={data.tags.join(', ')} />
     )}
   </head>
-  <body class="bg-[#201d1b] min-h-screen flex flex-col">
+  <body class="bg-[#201d1b] min-h-screen overflow-x-hidden flex flex-col">
     <BlogHeader />
     <main class="flex-grow  "> <!-- Adjust these values based on your header height -->
       <div class="container mx-auto px-4">

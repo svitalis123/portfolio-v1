@@ -44,11 +44,6 @@ const HomePage = () => {
     // Add more projects as needed
   ];
   
-  const blogPosts = [
-    { id: 1, title: "Blog Post 1", excerpt: "Excerpt 1" },
-    { id: 2, title: "Blog Post 2", excerpt: "Excerpt 2" },
-    { id: 3, title: "Blog Post 3", excerpt: "Excerpt 3" },
-  ];
 
   const skills = ["React", "Node.js", "Python", "AWS", "GraphQL", "TypeScript"];
 
