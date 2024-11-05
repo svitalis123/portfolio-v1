@@ -2,7 +2,6 @@
 import clientPromise from '../../lib/mongodb';
 import { createBlogPost, BlogPostSchema } from '../../models/BlogPost';
 import { sanitizeRichTextContent } from '../../utils/htmlSanitizer';
-
 export async function POST({ request }) {
   const blogData = await request.json();
   
