@@ -16,7 +16,6 @@ const collection = db.collection("posts");
 
 const blogPosts = await collection.find({}).sort({"createdAt": -1}).toArray();
 
-console.log("my blogposts", blogPosts);
 const getInitials = (name) => {
   return name
     .split(" ")

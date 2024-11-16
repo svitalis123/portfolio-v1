@@ -35,6 +35,30 @@ const HomePage = () => {
       type: "web",
       link: "https://cloud-drive-psi.vercel.app/"
     },
+    { 
+      id: 4, 
+      title: "Roots Africa Website", 
+      description: "ROOTS AFRICA simplifies real estate investment for Africans in the diaspora, offering end-to-end solutions from planning to property management. With proven returns of 20% and dedicated local expertise, we're your trusted partner for investing in Africa's growing real estate market.", 
+      technologies: ["Astro", "Sanity", "React"],
+      type: "web",
+      link: "https://rootsafrica.co/"
+    },
+    { 
+      id: 5, 
+      title: "Shukran", 
+      description: "Shukran is a digital tipping platform that enables seamless gratuity payments to service workers across 135 currencies. Whether through M-PESA or card payments, users can easily tip individuals or teams via QR codes or phone numbers, ensuring service workers receive the recognition they deserve.", 
+      technologies: ["Astro", "Sanity", "React", "motion"],
+      type: "web",
+      link: "https://shukran.co/"
+    },
+    { 
+      id: 6, 
+      title: "Elevate HR", 
+      description: "ElevateHR is a comprehensive payroll and HR management platform built for African businesses. Combining intuitive software with professional outsourcing services, we help HR teams automate payroll processing, ensure compliance, and manage employee benefits with local expertise and exceptional support.", 
+      technologies: ["Astro", "Sanity", "React", "motion"],
+      type: "web",
+      link: "https://elevatehr.co/"
+    },
     // Add more projects as needed
   ];
   

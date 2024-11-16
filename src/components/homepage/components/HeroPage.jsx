@@ -10,7 +10,7 @@ const carouselItems = [
   {
     tagline: "Innovative Solutions",
     description: "Explore my projects showcasing creative problem-solving and cutting-edge technologies.",
-    image: "/shared/vitalis2.webp"
+    image: "/shared/vitalis3.webp"
   },
   // {
   //   tagline: "Let's Collaborate",
