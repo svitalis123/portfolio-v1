@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MongoClient, ObjectId } from "mongodb";
+import { ChevronRight } from "lucide-react";
 
 const client = new MongoClient(import.meta.env.MONGODB_URI);
 const db = client.db("blogDatabase");
 const collection = db.collection("posts");
 
-const blogPosts = await collection.find({}).toArray();
+const blogPosts = await collection.find({}).sort({"createdAt": -1}).toArray();
 
 console.log("my blogposts", blogPosts);
 const getInitials = (name) => {
@@ -47,7 +48,7 @@ const BlogPost = ({ blog }) => {
         </CardContent>
         <CardFooter className="p-4">
           <div className="flex items-center w-full">
-            <Avatar className="h-8 w-8 mr-2 bg-[#3d3731] text-gray-100">
+            <Avatar className="h-8 w-8 mr-2 bg-[#3d3731] text-[#000]">
               <AvatarFallback>{getInitials(blog.author)}</AvatarFallback>
             </Avatar>
             <TypewriterText text={blog.author} />
@@ -84,7 +85,7 @@ const TypewriterText = ({ text }) => {
 const BlogPosts = () => {
   return (
     <div id="blog" className="bg-[#201d1b] max-w-[1330px] mx-auto text-gray-100 p-4 sm:p-6 md:p-8">
-      <h1 className="text-3xl sm:text-4xl font-bold mb-2">Blogs</h1>
+      <h2 className="text-3xl sm:text-4xl font-bold mb-2">Blogs</h2>
       <p className="text-gray-300 mb-6 sm:mb-8">
         Discover insightful resources and expert advice from me.
       </p>
@@ -93,6 +94,18 @@ const BlogPosts = () => {
           <BlogPost blog={blog} />
         ))}
       </div>
+      <div className="flex justify-center my-4">
+        <motion.a 
+          href="/blogs"
+          className="neumorphic-button max-w-[200px]  flex items-center px-6 py-3 rounded-full text-[#ecc7bc] bg-[#2a2624] transition-all duration-300 ease-in-out"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          All Blogs
+          <ChevronRight className="ml-2" />
+        </motion.a>
+      </div>
+    
     </div>
   );
 };

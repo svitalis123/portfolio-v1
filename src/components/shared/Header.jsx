@@ -33,9 +33,9 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          <li><a href="/#about" className="hover:text-primary transition-colors">About</a></li>
-          <li><a href="/#projects" className="hover:text-primary transition-colors">Projects</a></li>
-          <li><a href="/#blog" className="hover:text-primary transition-colors">Blog</a></li>
+          <li><a href="/#about" className="hover:text-[#fff] transition-colors">About</a></li>
+          <li><a href="/#projects" className="hover:text-[#fff] transition-colors">Projects</a></li>
+          <li><a href="/blogs" className="hover:text-[#fff] transition-colors">Blogs</a></li>
           {/* <li><a href="/#contact" className="hover:text-primary transition-colors">Contact</a></li> */}
         </ul>
       </nav>
@@ -71,7 +71,7 @@ const Header = () => {
             </li>
             <li>
               <a 
-                href="#blog" 
+                href="/blogs" 
                 className="block text-[#ecc7bc] hover:text-[#fff] transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >

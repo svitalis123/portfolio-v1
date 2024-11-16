@@ -34,29 +34,6 @@ const projects = [
 ];
 
 
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Changelog for 2024',
-    description: 'Explore the latest updates and enhancements in our 2024 changelog. Discover new features and improve...',
-    author: 'Vitalis Mutwiri',
-    image: 'https://pro.aceternity.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1696429175928-793a1cdef1d3%3Fq%3D80%26w%3D3000%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&w=828&q=75'
-  },
-  {
-    id: 2,
-    title: 'Understanding React Hooks',
-    description: 'A comprehensive guide to understanding and using React Hooks in your projects.',
-    author: 'Vitalis Mutwiri',
-    image: 'https://pro.aceternity.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1560958089-b8a1929cea89%3Fq%3D80%26w%3D3542%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&w=828&q=75'
-  },
-  {
-    id: 3,
-    title: 'CSS Grid Layout',
-    description: 'Learn how to create complex layouts easily with CSS Grid.',
-    author: 'Vitalis Mutwiri',
-    image: 'https://pro.aceternity.com/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1535223289827-42f1e9919769%3Fq%3D80%26w%3D3212%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&w=828&q=75'
-  }
-];
 
 	const skills = ["React", "Node.js", "Python", "AWS", "GraphQL", "TypeScript", "TanStack Query", "Google Cloud", "Python", "Data science", "Project management", "Agile Methodologies", "Idea Prototyping", "Project Research", "Idea Validation"];
 
@@ -71,7 +48,7 @@ const blogPosts = [
 			<FeaturedProjects client:load projects={projects} />						 
 		</div>
 		<div >
-			<BlogPosts blogPosts={blogPosts} client:load />
+			<BlogPosts client:load />
 		</div>
 		<div >
 			<SkillsProject skills={skills} client:load />
