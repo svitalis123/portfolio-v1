@@ -33,7 +33,7 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          <li><a href="/#about" className="hover:text-[#fff] transition-colors">About</a></li>
+          {/* <li><a href="/#about" className="hover:text-[#fff] transition-colors">About</a></li> */}
           <li><a href="/#projects" className="hover:text-[#fff] transition-colors">Projects</a></li>
           <li><a href="/blogs" className="hover:text-[#fff] transition-colors">Blogs</a></li>
           {/* <li><a href="/#contact" className="hover:text-primary transition-colors">Contact</a></li> */}
@@ -51,7 +51,7 @@ const Header = () => {
       >
         <div className="p-4">
           <ul className="space-y-4">
-            <li>
+            {/* <li>
               <a 
                 href="#about" 
                 className="block text-[#ecc7bc] hover:text-[#fff] transition-colors"
@@ -59,7 +59,7 @@ const Header = () => {
               >
                 About
               </a>
-            </li>
+            </li> */}
             <li>
               <a 
                 href="#projects" 
