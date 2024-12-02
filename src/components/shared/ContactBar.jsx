@@ -48,12 +48,12 @@ const ContactBar = () => {
       href: 'https://www.linkedin.com/in/vitalismutwiri/',
       color: 'blue'
     },
-    {
-      icon: Mail,
-      label: 'Email',
-      action: () => setIsModalOpen(true),
-      color: 'red'
-    }
+    // {
+    //   icon: Mail,
+    //   label: 'Email',
+    //   action: () => setIsModalOpen(true),
+    //   color: 'red'
+    // }
   ];
 
   return (
