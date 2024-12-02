@@ -20,12 +20,12 @@ const HeroSection = () => {
       icon: <Code className="w-8 h-8" />,
       skills: ["React", "Astro", "Next.js", "TypeScript"]
     },
-    {
-      title: "Freelancer",
-      description: "Delivering high-impact solutions for clients worldwide",
-      icon: <Briefcase className="w-8 h-8" />,
-      skills: ["UI/UX", "Performance", "SEO", "Analytics"]
-    },
+    // {
+    //   title: "Freelancer",
+    //   description: "Delivering high-impact solutions for clients worldwide",
+    //   icon: <Briefcase className="w-8 h-8" />,
+    //   skills: ["UI/UX", "Performance", "SEO", "Analytics"]
+    // },
     {
       title: "AWS Community Builder",
       description: "Active member of the AWS community, sharing knowledge and best practices",
