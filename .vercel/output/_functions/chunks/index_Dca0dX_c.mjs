@@ -4,7 +4,7 @@ import { useRef, useState, useMemo, useCallback } from 'react';
 /* empty css                         */
 import { BubbleMenu, NodeViewWrapper, isNumber, ReactNodeViewRenderer, useEditor, EditorContent } from '@tiptap/react';
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
-import { c as cn, L as Label, I as Input, B as Button, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogHeader, e as DialogTitle, f as DialogDescription } from './Layout_CRylQ-Au.mjs';
+import { c as cn, L as Label, I as Input, B as Button, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogHeader, e as DialogTitle, f as DialogDescription } from './Layout_D9Lz5knS.mjs';
 import { ChevronRightIcon, CheckIcon, DotFilledIcon, LetterCaseCapitalizeIcon, CaretDownIcon, DotsHorizontalIcon, FontBoldIcon, FontItalicIcon, ListBulletIcon, PlusIcon, CodeIcon, QuoteIcon, DividerHorizontalIcon } from '@radix-ui/react-icons';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
@@ -13,7 +13,7 @@ import { cva } from 'class-variance-authority';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
 import { Link2Icon, ImageIcon, ExternalLinkIcon, ScissorsLineDashed, CopyIcon, TrashIcon } from 'lucide-react';
-import { S as Switch } from './index_DsNsXkSE.mjs';
+import { S as Switch } from './index_CHAcdH8q.mjs';
 import { StarterKit } from '@tiptap/starter-kit';
 import { Typography } from '@tiptap/extension-typography';
 import { Placeholder } from '@tiptap/extension-placeholder';

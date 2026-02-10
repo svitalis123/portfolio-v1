@@ -1,12 +1,12 @@
 /* empty css                                 */
 import { e as createComponent, r as renderTemplate, k as renderComponent, h as createAstro, m as maybeRenderHead } from '../chunks/astro/server_BOClSVLC.mjs';
 import 'piccolore';
-import { $ as $$Layout } from '../chunks/Layout_CRylQ-Au.mjs';
+import { $ as $$Layout } from '../chunks/Layout_D9Lz5knS.mjs';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState, useRef, useEffect } from 'react';
 import { useMotionValue, useTransform, motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ArrowDown } from 'lucide-react';
-import { C as Card, c as CardHeader, a as CardContent, d as CardFooter, A as Avatar, b as AvatarFallback } from '../chunks/card_CVQ_NxZ3.mjs';
+import { C as Card, c as CardHeader, a as CardContent, d as CardFooter, A as Avatar, b as AvatarFallback } from '../chunks/card_B8_tVTiK.mjs';
 import { MongoClient } from 'mongodb';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';

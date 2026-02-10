@@ -4,7 +4,7 @@ import 'piccolore';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import * as React from 'react';
 import { lazy, useState, Suspense } from 'react';
-import { c as cn, L as Label, I as Input, T as Textarea, B as Button, $ as $$Layout } from './Layout_CRylQ-Au.mjs';
+import { c as cn, L as Label, I as Input, T as Textarea, B as Button, $ as $$Layout } from './Layout_D9Lz5knS.mjs';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import { X } from 'lucide-react';
 import { format } from 'date-fns';
@@ -148,7 +148,7 @@ function useToast() {
   };
 }
 
-const MinimalTiptapEditor = lazy(() => import('./index_DJyLgBpi.mjs').then((mod) => ({ default: mod.MinimalTiptapEditor })));
+const MinimalTiptapEditor = lazy(() => import('./index_Dca0dX_c.mjs').then((mod) => ({ default: mod.MinimalTiptapEditor })));
 const EnhancedBlogUpload = () => {
   const { toast } = useToast();
   const initialBlogData = {
