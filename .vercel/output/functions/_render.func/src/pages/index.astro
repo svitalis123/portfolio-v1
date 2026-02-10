@@ -1,0 +1,136 @@
+---
+import HomePage from '@/components/homepage/HomePage';
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '@/components/homepage/components/HeroPage';
+import FeaturedProjects from '@/components/homepage/components/FeaturedProjects';
+import SkillsProject from '@/components/homepage/components/SkillsProject';
+import BlogPosts from '@/components/homepage/components/BlogPosts';
+
+const projects = [
+    {
+      id: 1,
+      title: "Yellow Stroke",
+      description: "A global hub of collaborators bringing together diverse world experts — coaches, industry veterans, master facilitators — who tailor their expertise to your specific needs. Facilitating growth and empowering individuals through mentoring and training sessions.",
+      technologies: ["React", "Framer Motion", "Tailwind CSS", "shadcn/ui"],
+      type: "web",
+      link: "https://yellowstroke.com/"
+    },
+    {
+      id: 2,
+      title: "The Bridge Program",
+      description: "A 2-month online career launch program for university students and recent graduates designed to bridge the gap between in-class learning and the skills required to thrive in the 21st century through mindset shift, execution skills, and career launch.",
+      technologies: ["Astro", "Tailwind CSS", "HubSpot"],
+      type: "web",
+      link: "https://www.thebridgeprogram.co/"
+    },
+    {
+      id: 3,
+      title: "Techihub",
+      description: "A digital tech community connecting top talent with leading companies across Africa and beyond to create innovative solutions for the world.",
+      technologies: ["Next.js", "React", "Tailwind CSS", "AWS"],
+      type: "web",
+      link: "https://www.techihub.io/"
+    },
+    {
+      id: 4,
+      title: "Ravora Systems",
+      description: "Enterprise IT hardware and bulk procurement solutions platform providing organizations with reliable IT equipment, competitive pricing, and flexible quote-based ordering for businesses of all sizes.",
+      technologies: ["Next.js", "React", "Tailwind CSS", "Stripe"],
+      type: "web",
+      link: "https://www.ravorasystems.com/ke"
+    },
+    {
+      id: 5,
+      title: "SISCOM Africa",
+      description: "A digital infrastructure investment platform enabling users to own a stake in Kenya's $3.5B cloud, data, and AI opportunity through scalable infrastructure assets that earn rent and lease income.",
+      technologies: ["Django", "Python", "Chart.js", "Cloudflare"],
+      type: "web",
+      link: "https://siscom.africa/"
+    },
+    {
+      id: 6,
+      title: "Impact Africa",
+      description: "Innovation fellowship platform offering programs to recent college graduates, guiding them in developing vetted ideas and building fundamentally sound early-stage startups with a meaningful chance of attracting growth capital for scaling.",
+      technologies: ["Bootstrap", "JavaScript", "Swiper", "Axios"],
+      type: "web",
+      link: "https://impactafrica.network/"
+    },
+    {
+      id: 7,
+      title: "Bank of Creators",
+      description: "An all-in-one platform for music creators to manage royalties, global distribution, business payments, sync partnerships, and funding. Helping artists manage their money like pros so they can focus on creating, not chasing checks.",
+      technologies: ["React", "Framer Motion", "Tailwind CSS", "shadcn/ui"],
+      type: "web",
+      link: "https://cosmic-pie-bd6b86.netlify.app/"
+    },
+];
+
+
+
+	const skills = ["React", "Node.js", "Python", "AWS", "GraphQL", "TypeScript", "TanStack Query", "Google Cloud", "Python", "Data science", "Project management", "Agile Methodologies", "Idea Prototyping", "Project Research", "Idea Validation"];
+
+---
+
+<Layout title="Vitalis">
+	<main class=" bg-[#201d1b] w-full overflow-hidden text-[#ecc7bc]">
+		<div >
+			<HeroPage client:load />
+		</div>
+		<div class="my_container ">
+			<FeaturedProjects client:load projects={projects} />						 
+		</div>
+		<div >
+			<BlogPosts client:load />
+		</div>
+		<div >
+			<SkillsProject skills={skills} client:load />
+		</div>
+	</main>
+</Layout>
+<style>
+	html {
+  overflow-y: scroll;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+	}
+
+	body {
+		overflow-y: visible;
+		position: relative;
+		height: unset;
+	}
+	html, body {
+		overflow-x: hidden;
+		margin: 0;
+	}
+
+	.my_container {
+		width: 700%;
+		height: 100vh;
+		display: flex;
+		flex-wrap: nowrap;
+	}
+</style>
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script is:inline>
+	gsap.registerPlugin(ScrollTrigger);
+
+	let sections = gsap.utils.toArray(".panel");
+
+	gsap.to(sections, {
+		xPercent: -100 * (sections.length - 1),
+		ease: "none",
+		scrollTrigger: {
+			trigger: ".my_container",
+			pin: true,
+			scrub: 1,
+			snap: 1 / (sections.length - 1),
+			end: () => "+=" + document.querySelector(".my_container").offsetWidth
+		}
+	});
+
+
+</script>

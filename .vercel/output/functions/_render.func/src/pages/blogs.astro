@@ -1,0 +1,23 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { MongoClient } from "mongodb";
+import FeaturedBlogPost from "../components/blogs/FeaturedBlogPost";
+import BlogListingPage from "@/components/blogs/BlogListingPage";
+
+
+
+const client = new MongoClient(import.meta.env.MONGODB_URI);
+const db = client.db("blogDatabase");
+const collection = db.collection("posts");
+
+const blogPosts = await collection.find({}).sort({"createdAt": -1}).toArray();
+
+console.log("my blogposts", blogPosts);
+---
+
+<Layout title="blogs">
+	<main class=" bg-[#201d1b] w-full py-4 lg:py-12 overflow-hidden text-[#ecc7bc]">
+    <FeaturedBlogPost  blog={blogPosts[0]}  client:load/>
+		<BlogListingPage blogs={blogPosts}  client:load/>
+	</main>
+</Layout>
