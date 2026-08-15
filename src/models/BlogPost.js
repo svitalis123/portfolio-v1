@@ -1,10 +1,10 @@
-// File: src/models/BlogPost.js
 import { ObjectId } from 'mongodb';
 
 export const BlogPostSchema = {
   title: { type: String, required: true },
-  content: { type: String, required: true }, // the problem is here it should expect html
+  content: { type: String, required: true },
   excerpt: { type: String },
+  slug: { type: String },
   tags: { type: [String], default: [] },
   categories: { type: [String], default: [] },
   author: { type: String, required: true },
@@ -16,10 +16,21 @@ export const BlogPostSchema = {
   updatedAt: { type: Date, default: Date.now },
 };
 
+export function slugify(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .substring(0, 80);
+}
+
 export function createBlogPost(data) {
   return {
     ...data,
     _id: new ObjectId(),
+    slug: data.slug || slugify(data.title),
     createdAt: new Date(),
     updatedAt: new Date(),
   };

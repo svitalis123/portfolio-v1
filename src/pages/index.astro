@@ -5,6 +5,18 @@ import HeroPage from '@/components/homepage/components/HeroPage';
 import FeaturedProjects from '@/components/homepage/components/FeaturedProjects';
 import SkillsProject from '@/components/homepage/components/SkillsProject';
 import BlogPosts from '@/components/homepage/components/BlogPosts';
+import { MongoClient } from 'mongodb';
+
+const mongoClient = new MongoClient(import.meta.env.MONGODB_URI);
+let blogPosts = [];
+try {
+  await mongoClient.connect();
+  const db = mongoClient.db("blogDatabase");
+  const posts = await db.collection("posts").find({}).sort({ createdAt: -1 }).toArray();
+  blogPosts = JSON.parse(JSON.stringify(posts));
+} finally {
+  await mongoClient.close();
+}
 
 const projects = [
     {
@@ -80,7 +92,7 @@ const projects = [
 			<FeaturedProjects client:load projects={projects} />						 
 		</div>
 		<div >
-			<BlogPosts client:load />
+			<BlogPosts blogPosts={blogPosts} client:load />
 		</div>
 		<div >
 			<SkillsProject skills={skills} client:load />

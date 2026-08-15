@@ -7,12 +7,15 @@ import BlogListingPage from "@/components/blogs/BlogListingPage";
 
 
 const client = new MongoClient(import.meta.env.MONGODB_URI);
-const db = client.db("blogDatabase");
-const collection = db.collection("posts");
-
-const blogPosts = await collection.find({}).sort({"createdAt": -1}).toArray();
-
-console.log("my blogposts", blogPosts);
+let blogPosts = [];
+try {
+  await client.connect();
+  const db = client.db("blogDatabase");
+  const posts = await db.collection("posts").find({}).sort({ createdAt: -1 }).toArray();
+  blogPosts = JSON.parse(JSON.stringify(posts));
+} finally {
+  await client.close();
+}
 ---
 
 <Layout title="blogs">

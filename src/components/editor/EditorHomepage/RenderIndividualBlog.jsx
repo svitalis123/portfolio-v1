@@ -160,10 +160,10 @@ const RenderIndividualBlog = ({ blogData }) => {
   return (
     <div className="min-h-screen bg-[#201d1b] w-full text-[#fff] font-sans">
       {/* Rest of the component remains the same */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-blue-500 z-50" style={{ width: `${scrollProgress}%` }}></div>
+      <div className="fixed top-0 left-0 w-full h-1 bg-blue-500 z-40" style={{ width: `${scrollProgress}%` }}></div>
       
       <div className="lg:flex">
-        <nav className={`lg:w-1/4 lg:max-w-[300px] lg:fixed lg:h-screen p-8 bg-[#ecc7bc] shadow-md z-40 ${isMenuOpen ? 'fixed inset-0' : 'hidden lg:block'}`}>
+        <nav className={`lg:w-1/4 lg:max-w-[300px] lg:fixed lg:top-20 lg:h-[calc(100vh-5rem)] p-8 bg-[#ecc7bc] shadow-md z-40 ${isMenuOpen ? 'fixed inset-0' : 'hidden lg:block'}`}>
           <button onClick={() => setIsMenuOpen(false)} className="lg:hidden absolute top-4 right-4 text-gray-700">
             Close
           </button>

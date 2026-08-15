@@ -18,10 +18,16 @@ const isAdminRoute = (pathname: string): boolean => {
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  // Check if this is an admin route
+  // Public routes: add cache headers and skip auth
   if (!isAdminRoute(context.url.pathname)) {
     debug('Non-admin route, skipping auth:', context.url.pathname);
-    return next();
+    const response = await next();
+    const cached = new Response(response.body, response);
+    cached.headers.set(
+      'Cache-Control',
+      'public, s-maxage=60, stale-while-revalidate=300'
+    );
+    return cached;
   }
 
   debug('Protecting admin route:', context.url.pathname);

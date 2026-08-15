@@ -10,6 +10,7 @@ const description = "I am Vitalis A frontend developer Throughout my career, I'v
 // Supports weights 200-800
 import '@fontsource-variable/plus-jakarta-sans';
 import '@/styles/global.css'
+import { ClientRouter } from 'astro:transitions';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/shared/Header';
 import ContactBar from '@/components/shared/ContactBar';
@@ -22,9 +23,10 @@ import ContactBar from '@/components/shared/ContactBar';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="website" />
     <meta property="og:url" content={`https://yourdomain.com`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -39,12 +41,11 @@ import ContactBar from '@/components/shared/ContactBar';
 
     <!-- Canonical URL -->
     <link rel="canonical" href={`https://yourdomain.com`} />
+    <ClientRouter />
 
     <!-- Additional SEO tags -->
     <meta name="author" content={author} />
-    <!-- <meta name="date" content={date} /> -->
     <meta name="keywords" content="software engineer developer front-end developer full-stack developer" />
-		<title>{title}</title>
 	</head>
 	<body>
 		<!-- Cooking Preloader -->

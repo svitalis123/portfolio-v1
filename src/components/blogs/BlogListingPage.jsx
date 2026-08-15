@@ -81,7 +81,7 @@ const BlogListingPage = ({ blogs }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <a href={`/blogs/${blog._id}`} className="no-underline hover:no-underline">
+              <a href={`/blogs/${blog.slug || blog._id}`} className="no-underline hover:no-underline">
                 <Card className="bg-[#2c2824] border-none hover:border-gray-700 overflow-hidden h-full">
                   <CardContent className="p-0">
                     {/* Image */}
