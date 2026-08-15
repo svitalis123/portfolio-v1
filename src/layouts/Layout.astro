@@ -297,4 +297,9 @@ body {
 			}, 2500);
 		}
 	});
+
+	document.addEventListener('astro:before-swap', function(e) {
+		var preloader = e.newDocument.getElementById('preloader');
+		if (preloader) preloader.remove();
+	});
 </script>
