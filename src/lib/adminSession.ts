@@ -1,3 +1,4 @@
+import { getSecret } from 'astro:env/server';
 import { timingSafeEqual } from './timingSafeEqual';
 
 /**
@@ -12,7 +13,7 @@ export const ADMIN_COOKIE = 'admin_session';
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
 
 function signingSecret(): string {
-  const secret = import.meta.env.ADMIN_SESSION_SECRET || import.meta.env.ADMIN_PASSWORD;
+  const secret = getSecret('ADMIN_SESSION_SECRET') || getSecret('ADMIN_PASSWORD');
   if (!secret) {
     throw new Error('Missing ADMIN_SESSION_SECRET (or ADMIN_PASSWORD to derive it from)');
   }

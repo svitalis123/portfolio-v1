@@ -1,3 +1,4 @@
+import { getSecret } from 'astro:env/server';
 import { timingSafeEqual } from './timingSafeEqual';
 
 /** Best-effort caller identity for rate limiting — spoofable, so never used for authorization. */
@@ -25,8 +26,11 @@ export function hasValidCredentials(header: string): boolean {
   const separator = decoded.indexOf(':');
   if (separator === -1) return false;
 
-  const expectedUsername = import.meta.env.ADMIN_USERNAME;
-  const expectedPassword = import.meta.env.ADMIN_PASSWORD;
+  // Read at runtime: Astro 6 inlines `import.meta.env` at build time, which both
+  // baked these credentials into the server bundle and left them `undefined`
+  // whenever the build environment lacked them.
+  const expectedUsername = getSecret('ADMIN_USERNAME');
+  const expectedPassword = getSecret('ADMIN_PASSWORD');
   // Never authenticate against unset config, or a misconfigured deploy is wide open.
   if (!expectedUsername || !expectedPassword) return false;
 

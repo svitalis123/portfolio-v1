@@ -6,11 +6,23 @@ import SkillsProject from '@/components/homepage/SkillsProject.astro';
 import BlogPosts from '@/components/homepage/BlogPosts.astro';
 import Certifications from '@/components/homepage/Certifications.astro';
 import { listPosts } from '@/services/BlogDataService';
+import type { BlogListItem } from '@/services/blogMappers';
 import { PROJECTS } from '@/data/projects';
 import { SKILLS } from '@/data/skills';
 import { HERO_IMAGES } from '@/data/hero';
 
-const blogPosts = await listPosts({ limit: 3 });
+// The blog strip is one section of this page, so a database outage should cost
+// that section rather than the whole homepage. /blogs still fails loudly, because
+// posts are the entire point of that route.
+let blogPosts: BlogListItem[] = [];
+try {
+  blogPosts = await listPosts({ limit: 3 });
+} catch (error) {
+  // Not swallowed: console.error is this project's only error channel and Vercel
+  // captures it. BlogPosts renders nothing for an empty list, so the page degrades
+  // to hero + projects + skills + certifications.
+  console.error('[index] failed to load blog posts', error);
+}
 ---
 
 <Layout title="Vitalis" preloadImage={HERO_IMAGES[0]}>

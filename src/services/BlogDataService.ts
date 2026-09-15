@@ -1,5 +1,5 @@
 import { ObjectId, type Collection, type Document, type Filter } from 'mongodb';
-import clientPromise from '@/lib/mongodb';
+import { mongoClient } from '@/lib/mongodb';
 import { slugify } from '@/models/BlogPost';
 import { sanitizeRichTextContent } from '@/utils/htmlSanitizer';
 import { toFullPost, toListItem, type BlogListItem, type BlogPost } from './blogMappers';
@@ -18,7 +18,7 @@ const COLLECTION_NAME = 'posts';
 const PUBLISHED: Filter<Document> = { isPublished: true };
 
 export async function postsCollection(): Promise<Collection<Document>> {
-  const client = await clientPromise;
+  const client = await mongoClient();
   return client.db(DB_NAME).collection(COLLECTION_NAME);
 }
 
