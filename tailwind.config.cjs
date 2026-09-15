@@ -47,6 +47,13 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
+      boxShadow: {
+        // Referenced as shadow-neumorphic* by SkillsProject and friends; without
+        // these entries those classes compiled to nothing.
+        neumorphic: '8px 8px 16px #161412, -8px -8px 16px #2a2624',
+        'neumorphic-inset': 'inset 8px 8px 16px #161412, inset -8px -8px 16px #2a2624',
+        'neumorphic-dark': '6px 6px 12px #16121a, -6px -6px 12px #3c2a3c',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

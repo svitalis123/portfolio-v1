@@ -1,0 +1,80 @@
+---
+import { MenuIcon, X } from 'lucide-react';
+
+// Was a client:load React island on every page, which pulled react-dom into the
+// critical path to toggle one menu. The markup is static; the toggle is delegated.
+const NAV_LINKS = [
+  { href: '/#projects', label: 'Projects' },
+  { href: '/blogs', label: 'Blogs' },
+  { href: '/cv', label: 'CV' },
+];
+---
+
+<div class="bg-[#201d1b] text-[#ecc7bc] relative" data-nav>
+  <nav class="p-4 flex w-[98%] mx-auto justify-between items-center">
+    <h1 class="text-2xl font-bold text-[#ecc7bc]">
+      <a href="/" class="no-underline hover:no-underline">Vitalis</a>
+    </h1>
+
+    <div class="md:hidden">
+      <button
+        type="button"
+        data-nav-toggle
+        class="focus:outline-none focus:ring-2 focus:ring-[#ecc7bc] rounded"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <MenuIcon className="text-[#ecc7bc] h-6 w-6" data-nav-icon-open />
+        <X className="text-[#ecc7bc] h-6 w-6 hidden" data-nav-icon-close />
+      </button>
+    </div>
+
+    <ul class="hidden md:flex space-x-6 list-none">
+      {
+        NAV_LINKS.map(({ href, label }) => (
+          <li>
+            <a href={href} class="hover:text-[#fff] transition-colors">
+              {label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div
+    data-nav-drawer
+    class="fixed top-0 left-0 h-full w-2/3 max-w-xs bg-[#201d1b] z-50 transform transition-transform duration-300 ease-in-out md:hidden -translate-x-full"
+  >
+    <div class="p-4 pt-16">
+      <ul class="space-y-4 list-none p-0">
+        {
+          NAV_LINKS.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                data-nav-close
+                class="block text-[#ecc7bc] hover:text-[#fff] transition-colors"
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div
+    data-nav-overlay
+    class="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden hidden"
+    aria-hidden="true"
+  >
+  </div>
+</div>
+
+<script>
+  import { initNav } from '@/scripts/nav';
+
+  initNav();
+</script>

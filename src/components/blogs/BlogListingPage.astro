@@ -1,0 +1,83 @@
+---
+import BlogCard from './BlogCard.astro';
+import type { BlogListItem } from '@/services/blogMappers';
+
+interface Props {
+  blogs: BlogListItem[];
+}
+
+const { blogs } = Astro.props;
+
+const ALL = 'ALL';
+const categories = [ALL, ...new Set(blogs.flatMap((blog) => blog.categories))];
+---
+
+<div class="max-w-[1330px] mx-auto px-4">
+  <div class="mb-8">
+    <nav class="overflow-x-auto" aria-label="Filter posts by category">
+      <div class="flex space-x-4 py-4 min-w-max" data-category-filter>
+        {
+          categories.map((category) => (
+            <button
+              type="button"
+              data-category={category}
+              aria-pressed={category === ALL ? 'true' : 'false'}
+              class="category-chip cursor-pointer px-4 py-2 rounded-full text-xs font-semibold transition-colors duration-200"
+            >
+              {category.toUpperCase()}
+            </button>
+          ))
+        }
+      </div>
+    </nav>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-blog-grid>
+    {blogs.map((blog, index) => <BlogCard blog={blog} delay={Math.min(index * 0.06, 0.6)} />)}
+  </div>
+</div>
+
+<style>
+  .category-chip {
+    background: #3d3731;
+    color: #f3f4f6;
+  }
+  .category-chip:hover {
+    background: #2c2824;
+  }
+  .category-chip[aria-pressed='true'] {
+    background: #2c2824;
+  }
+</style>
+
+<script>
+  // Filtering is a class toggle over server-rendered cards, so the list is complete
+  // and readable before any script runs — and if this never loads, nothing is lost
+  // but the filter itself.
+  function initCategoryFilter() {
+    const bar = document.querySelector<HTMLElement>('[data-category-filter]');
+    const grid = document.querySelector<HTMLElement>('[data-blog-grid]');
+    if (!bar || !grid) return;
+
+    const cards = [...grid.querySelectorAll<HTMLElement>('[data-categories]')];
+
+    bar.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-category]');
+      if (!button) return;
+
+      const selected = button.dataset.category ?? 'ALL';
+
+      bar.querySelectorAll<HTMLButtonElement>('[data-category]').forEach((chip) => {
+        chip.setAttribute('aria-pressed', String(chip === button));
+      });
+
+      cards.forEach((card) => {
+        const categories = (card.dataset.categories ?? '').split('|').filter(Boolean);
+        const visible = selected === 'ALL' || categories.includes(selected);
+        card.classList.toggle('hidden', !visible);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initCategoryFilter);
+</script>

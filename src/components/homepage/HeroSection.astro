@@ -1,0 +1,59 @@
+---
+import { ArrowDown } from 'lucide-react';
+import HeroBackdrop from './hero/HeroBackdrop.astro';
+import HeroCopy from './hero/HeroCopy.astro';
+import HeroPortrait from './hero/HeroPortrait.astro';
+import { HERO_IMAGES, HERO_ROLES } from '@/data/hero';
+
+// Static markup on purpose. This was a React island whose framer-motion `initial`
+// styles rendered the whole hero at opacity:0, so nothing was visible until
+// ~371KB of JS had hydrated. It now paints from HTML and CSS; the script below is
+// a progressive enhancement that can arrive whenever it likes.
+---
+
+<div
+  class="relative min-h-screen bg-[#201d1b] text-[#ecc7bc] overflow-hidden flex items-center"
+  data-hero
+>
+  <HeroBackdrop />
+
+  <div class="container mx-auto px-6 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-screen py-20">
+      <HeroCopy roles={HERO_ROLES} first="VITALIS" last="MUTWIRI" />
+      <HeroPortrait images={HERO_IMAGES} />
+    </div>
+  </div>
+
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 a-fade-in"
+    style="--a-delay: 2s"
+    aria-hidden="true"
+  >
+    <span class="text-xs tracking-[0.2em] uppercase opacity-40">Scroll</span>
+    <div class="hero-bob">
+      <ArrowDown className="w-4 h-4 opacity-40" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero-bob {
+    animation: heroBob 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heroBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bob { animation: none; }
+  }
+</style>
+
+<script>
+  import { initHero } from '@/scripts/hero';
+
+  initHero();
+  document.addEventListener('astro:page-load', initHero);
+</script>

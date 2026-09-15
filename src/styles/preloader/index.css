@@ -1,0 +1,5 @@
+/* Cooking-pot preloader. Every selector is scoped under #preloader so these
+   decorative class names cannot collide with anything else on the page. */
+@import './stage.css';
+@import './pot.css';
+@import './heat.css';

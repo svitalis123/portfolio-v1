@@ -1,0 +1,72 @@
+---
+import { getInitials, formatPublishDate } from '@/lib/blogDisplay';
+import type { BlogListItem } from '@/services/blogMappers';
+
+interface Props {
+  blog: BlogListItem;
+  delay?: number;
+}
+
+const { blog, delay = 0 } = Astro.props;
+---
+
+<article class="a-fade-up" style={`--a-delay: ${delay}s`} data-categories={blog.categories.join('|')}>
+  <a href={`/blogs/${blog.slug}`} class="no-underline hover:no-underline block h-full">
+    <div class="blog-card bg-[#2c2824] rounded-lg overflow-hidden h-full">
+      {
+        blog.coverImage && (
+          <div class="relative h-48">
+            <img
+              src={blog.coverImage}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#2c2824] via-transparent to-transparent opacity-50" />
+          </div>
+        )
+      }
+
+      <div class="p-6 space-y-4">
+        <div class="flex flex-wrap gap-2">
+          {
+            blog.categories.map((category) => (
+              <span class="inline-flex items-center rounded-full bg-[#3d3731] text-gray-100 px-2.5 py-0.5 text-xs font-semibold">
+                {category.toUpperCase()}
+              </span>
+            ))
+          }
+        </div>
+
+        <h2 class="text-xl font-bold text-gray-100 line-clamp-2">{blog.title}</h2>
+        <p class="text-gray-300 text-sm line-clamp-3">{blog.excerpt}</p>
+
+        <div class="flex items-center space-x-4 pt-4">
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#3d3731] text-[#000] text-xs font-medium"
+          >
+            {getInitials(blog.author)}
+          </span>
+
+          <div class="flex flex-col">
+            <span class="text-gray-100 text-sm">{blog.author}</span>
+            <span class="text-gray-400 text-xs">{formatPublishDate(blog.publishDate)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .blog-card {
+    transition: transform 0.25s ease;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card:hover { transform: none; }
+  }
+</style>

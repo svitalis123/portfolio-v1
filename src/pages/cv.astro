@@ -1,0 +1,75 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import CvHeader from '@/components/cv/CvHeader.astro';
+import CvSection from '@/components/cv/CvSection.astro';
+import CvProject from '@/components/cv/CvProject.astro';
+import CvExperience from '@/components/cv/CvExperience.astro';
+import CvEducation from '@/components/cv/CvEducation.astro';
+import CvCredentials from '@/components/cv/CvCredentials.astro';
+import { CV_PROFILE, CV_PROJECTS, CV_DECISIONS, CV_SKILLS } from '@/data/cv';
+---
+
+<Layout
+  title="CV — Vitalis Mutwiri"
+  description="Full-Stack Engineer with 4+ years shipping production platforms across fintech, marketplaces, edtech and HR SaaS."
+>
+  <main class="bg-[#201d1b] text-[#ecc7bc] min-h-screen">
+    <div class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+      <CvHeader />
+
+      <CvSection id="summary" title="Summary">
+        <p class="text-sm md:text-base leading-relaxed text-[#ecc7bc]/85">
+          {CV_PROFILE.summary}
+        </p>
+      </CvSection>
+
+      <CvSection id="projects" title="Projects">
+        {CV_PROJECTS.map((project) => <CvProject project={project} />)}
+      </CvSection>
+
+      <CvSection id="experience" title="Professional Experience">
+        <CvExperience />
+      </CvSection>
+
+      <CvSection id="decisions" title="Architecture & Technical Decisions">
+        <ul class="space-y-4 list-none p-0">
+          {
+            CV_DECISIONS.map((decision) => (
+              <li class="text-sm leading-relaxed text-[#ecc7bc]/85">
+                <span class="font-semibold text-[#ecc7bc]">{decision.label}:</span>{' '}
+                {decision.detail}
+              </li>
+            ))
+          }
+        </ul>
+      </CvSection>
+
+      <CvSection id="skills" title="Skills">
+        <dl class="space-y-4">
+          {
+            CV_SKILLS.map((group) => (
+              <div>
+                <dt class="text-sm font-semibold text-[#ecc7bc] mb-2">{group.label}</dt>
+                <dd class="m-0">
+                  <ul class="flex flex-wrap gap-2 list-none p-0">
+                    {group.items.map((item) => (
+                      <li class="rounded-full bg-[#492c49] px-2.5 py-0.5 text-xs">{item}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </CvSection>
+
+      <CvSection id="education" title="Education">
+        <CvEducation />
+      </CvSection>
+
+      <CvSection id="certifications" title="Certifications & Programmes">
+        <CvCredentials columns={2} />
+      </CvSection>
+    </div>
+  </main>
+</Layout>

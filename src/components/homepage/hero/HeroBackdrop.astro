@@ -1,0 +1,67 @@
+---
+// Decorative only: grid rules, a parallax glow and drifting accent dots.
+// The glow follows the pointer via CSS custom properties set by hero.ts.
+const GRID_POSITIONS = ['10%', '30%', '50%', '70%', '90%'];
+const DOT_COUNT = 6;
+---
+
+<div aria-hidden="true">
+  <div class="absolute inset-0 pointer-events-none">
+    {
+      GRID_POSITIONS.map((left) => (
+        <div
+          class="absolute top-0 w-px h-full bg-[#ecc7bc] opacity-[0.04]"
+          style={`left: ${left}`}
+        />
+      ))
+    }
+  </div>
+
+  <div class="hero-glow" data-hero-parallax></div>
+
+  {
+    Array.from({ length: DOT_COUNT }, (_, index) => (
+      <div
+        class="hero-dot"
+        style={`top: ${15 + index * 14}%; left: ${5 + index * 16}%; --dot-duration: ${
+          3 + index * 0.5
+        }s; --dot-delay: ${index * 0.4}s`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    top: 20%;
+    right: 15%;
+    border-radius: 9999px;
+    opacity: 0.2;
+    filter: blur(120px);
+    pointer-events: none;
+    background: radial-gradient(circle, #e34b3a 0%, transparent 70%);
+    transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+  }
+
+  .hero-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #e34b3a;
+    animation: heroDot var(--dot-duration, 3s) ease-in-out var(--dot-delay, 0s) infinite;
+  }
+
+  @keyframes heroDot {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-15px); opacity: 0.7; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-dot { animation: none; }
+    .hero-glow { transform: none; }
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+interface Props {
+  skills: string[];
+}
+
+const { skills } = Astro.props;
+---
+
+<div class="h-full max-w-[1330px] mx-auto">
+  <section class="min-h-screen py-16 px-8">
+    <h2 class="text-4xl font-bold mb-8">Skills &amp; Technologies</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+      {
+        skills.map((skill, index) => (
+          <div
+            class="skill-tile flex items-center justify-center h-32 bg-[#492c49] rounded-xl shadow-neumorphic-dark a-scale-in"
+            style={`--a-delay: ${Math.min(index * 0.1, 1)}s`}
+          >
+            <span class="text-xl font-semibold text-[#ecc7bc]">{skill}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</div>
+
+<style>
+  .skill-tile {
+    transition: transform 0.25s ease;
+  }
+  .skill-tile:hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+  .skill-tile:active {
+    transform: scale(0.9);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skill-tile:hover,
+    .skill-tile:active {
+      transform: none;
+    }
+  }
+</style>

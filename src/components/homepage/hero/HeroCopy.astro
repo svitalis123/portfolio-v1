@@ -1,0 +1,92 @@
+---
+import { ChevronRight } from 'lucide-react';
+import HeroName from './HeroName.astro';
+
+interface Props {
+  roles: string[];
+  first: string;
+  last: string;
+}
+
+const { roles, first, last } = Astro.props;
+
+const CTA_BASE =
+  'px-7 py-3.5 rounded-full flex items-center gap-2 font-medium no-underline transition-colors duration-300';
+
+---
+
+<div class="lg:col-span-6 xl:col-span-5 space-y-8 relative z-20">
+  <div class="flex items-center gap-3 a-fade-up" style="--a-delay: 0.30s">
+    <div class="w-12 h-px bg-[#e34b3a]" aria-hidden="true"></div>
+    <span class="text-sm tracking-[0.3em] uppercase text-[#e34b3a] font-medium">Portfolio 2025</span>
+  </div>
+
+  <HeroName first={first} last={last} />
+
+  <div class="a-fade-up" style="--a-delay: 0.45s">
+    <div class="h-10 relative overflow-hidden">
+      <div class="absolute flex items-center gap-3">
+        <span class="text-[#e34b3a] text-xl font-mono" aria-hidden="true">//</span>
+        <span class="text-lg lg:text-xl font-light tracking-wide" data-role-label>{roles[0]}</span>
+      </div>
+    </div>
+
+    <div class="flex gap-2 mt-4" data-role-dots>
+      {
+        roles.map((role, index) => (
+          <button
+            type="button"
+            class="group flex items-center py-2"
+            data-role-index={index}
+            aria-label={`Show role: ${role}`}
+            aria-pressed={index === 0 ? 'true' : 'false'}
+          >
+            <span class="hero-dash h-[2px] rounded-full transition-all duration-500" />
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <p class="text-base lg:text-lg leading-relaxed opacity-70 max-w-md a-fade-up" style="--a-delay: 0.60s">
+    Building robust, scalable applications and empowering the next generation of developers across
+    Africa and beyond.
+  </p>
+
+  <div class="flex flex-wrap gap-4 pt-2 a-fade-up" style="--a-delay: 0.75s">
+    <a
+      href="https://wa.me/+254726721982"
+      target="_blank"
+      rel="noopener noreferrer"
+      class={`${CTA_BASE} group bg-[#e34b3a] text-white hero-cta`}
+    >
+      Connect With Me
+      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+    </a>
+
+    <a
+      href="#projects"
+      class={`${CTA_BASE} group border border-[#ecc7bc] border-opacity-30 text-[#ecc7bc] hover:border-[#e34b3a] hover:text-[#e34b3a] hero-cta`}
+    >
+      View Projects
+      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+    </a>
+  </div>
+</div>
+
+<style>
+  .hero-cta:hover { transform: scale(1.03); }
+  .hero-cta:active { transform: scale(0.97); }
+
+  [data-role-dots] button .hero-dash {
+    width: 0.75rem;
+    background: #ecc7bc;
+    opacity: 0.3;
+  }
+  [data-role-dots] button:hover .hero-dash { opacity: 0.6; }
+  [data-role-dots] button[aria-pressed='true'] .hero-dash {
+    width: 2rem;
+    background: #e34b3a;
+    opacity: 1;
+  }
+</style>

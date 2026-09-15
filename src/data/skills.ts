@@ -1,0 +1,16 @@
+export const SKILLS: string[] = [
+  'React',
+  'Node.js',
+  'Python',
+  'AWS',
+  'GraphQL',
+  'TypeScript',
+  'TanStack Query',
+  'Google Cloud',
+  'Data science',
+  'Project management',
+  'Agile Methodologies',
+  'Idea Prototyping',
+  'Project Research',
+  'Idea Validation',
+];

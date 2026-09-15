@@ -1,128 +1,59 @@
-// src/middleware.ts
 import { defineMiddleware } from 'astro:middleware';
+import { requireAdmin } from '@/lib/adminAuth';
 
-// Store login attempts in memory
-const loginAttempts = new Map<string, { count: number; timestamp: number }>();
+const SECURITY_HEADERS: Record<string, string> = {
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
 
-// Debug function
-const debug = (message: string, data?: any) => {
-  if (import.meta.env.DEV) {
-    console.log(`[Auth Debug] ${message}`, data || '');
+const isAdminPage = (pathname: string): boolean =>
+  pathname === '/admin' || pathname.startsWith('/admin/');
+
+/** Admin-only endpoints live under /api/admin/ so the gate is a path convention, not a list. */
+const isAdminApi = (pathname: string): boolean => pathname.startsWith('/api/admin/');
+
+const isApi = (pathname: string): boolean => pathname.startsWith('/api/');
+
+function harden(response: Response, { cacheable }: { cacheable: boolean }): Response {
+  // Clone rather than mutate: some adapters hand back an immutable headers object.
+  const hardened = new Response(response.body, response);
+
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    hardened.headers.set(name, value);
   }
-};
 
-// Function to check if path is an admin route
-const isAdminRoute = (pathname: string): boolean => {
-  // This will match /admin and all subroutes like /admin/, /admin/posts, etc.
-  return pathname === '/admin' || pathname.startsWith('/admin/');
-};
+  if (import.meta.env.PROD) {
+    hardened.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  hardened.headers.set(
+    'Cache-Control',
+    cacheable
+      ? 'public, s-maxage=60, stale-while-revalidate=300'
+      : // Admin and API responses are per-request and may be authenticated;
+        // a shared CDN cache must never hold them.
+        'private, no-store'
+  );
+
+  return hardened;
+}
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  // Public routes: add cache headers and skip auth
-  if (!isAdminRoute(context.url.pathname)) {
-    debug('Non-admin route, skipping auth:', context.url.pathname);
-    const response = await next();
-    const cached = new Response(response.body, response);
-    cached.headers.set(
-      'Cache-Control',
-      'public, s-maxage=60, stale-while-revalidate=300'
-    );
-    return cached;
-  }
+  const { pathname } = context.url;
+  const guarded = isAdminPage(pathname) || isAdminApi(pathname);
 
-  debug('Protecting admin route:', context.url.pathname);
-
-  try {
-    const clientIp = context.request.headers.get('x-forwarded-for')?.split(',')[0] || 
-                     context.request.headers.get('x-real-ip') || 
-                     'unknown';
-
-    // Check for rate limiting
-    const attempt = loginAttempts.get(clientIp);
-    if (attempt?.count >= 2) {
-      const timeLeft = Math.ceil((attempt.timestamp + 3 - Date.now()) / 1000 / 60);
-      debug('Rate limited IP:', clientIp);
-      return new Response(
-        `Too many login attempts. Please try again in ${timeLeft} minutes.`,
-        { status: 429 }
-      );
-    }
-
-    // Check for auth header
-    const authHeader = context.request.headers.get('authorization');
-    if (!authHeader) {
-      debug('No auth header present');
-      return new Response('Authorization required', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Admin Area"'
-        }
-      });
-    }
-
-    // Parse auth header
-    const [scheme, encoded] = authHeader.split(' ');
-    if (!encoded || scheme !== 'Basic') {
-      debug('Invalid auth header format');
-      return new Response('Invalid authentication format', { status: 401 });
-    }
-
-    // Decode credentials
-    const decoded = atob(encoded);
-    const [username, password] = decoded.split(':');
-
-    debug('Checking credentials:', { 
-      providedUsername: username, 
-      expectedUsername: import.meta.env.ADMIN_USERNAME,
-      credentialsMatch: username === import.meta.env.ADMIN_USERNAME && 
-                       password === import.meta.env.ADMIN_PASSWORD 
+  // Edge gate: rejects unauthenticated traffic early and mints the session cookie.
+  // Route handlers re-check independently via requireAdmin, so a middleware bypass
+  // (see CVE-2025-29927 for why that is not hypothetical) is not an auth bypass.
+  if (guarded) {
+    const denied = await requireAdmin(context, {
+      audience: isAdminApi(pathname) ? 'api' : 'page',
     });
-
-    // Verify credentials
-    if (
-      username !== import.meta.env.ADMIN_USERNAME || 
-      password !== import.meta.env.ADMIN_PASSWORD
-    ) {
-      // Track failed attempt
-      const currentAttempt = loginAttempts.get(clientIp) || { count: 0, timestamp: Date.now() };
-      loginAttempts.set(clientIp, {
-        count: currentAttempt.count + 1,
-        timestamp: Date.now()
-      });
-
-      debug('Invalid credentials. Attempt:', currentAttempt.count + 1);
-
-      return new Response('Invalid credentials', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Admin Area"'
-        }
-      });
-    }
-
-    // Authentication successful
-    debug('Authentication successful');
-    loginAttempts.delete(clientIp);
-
-    // Add security headers to the response
-    const response = await next();
-    const newResponse = new Response(response.body, response);
-    
-    newResponse.headers.set('X-Frame-Options', 'DENY');
-    newResponse.headers.set('X-Content-Type-Options', 'nosniff');
-    newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    
-    if (import.meta.env.PROD) {
-      newResponse.headers.set(
-        'Strict-Transport-Security',
-        'max-age=31536000; includeSubDomains'
-      );
-    }
-
-    return newResponse;
-
-  } catch (error) {
-    console.error('Auth error:', error);
-    return new Response('Authentication error', { status: 500 });
+    // Harden the rejection too: a 401/429 still needs the security headers, and
+    // must never be cached and replayed to the next visitor.
+    if (denied) return harden(denied, { cacheable: false });
   }
+
+  return harden(await next(), { cacheable: !guarded && !isApi(pathname) });
 });

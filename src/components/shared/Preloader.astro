@@ -1,0 +1,77 @@
+---
+// Cooking-pot preloader. Styles live in src/styles/preloader/, scoped under #preloader.
+import '@/styles/preloader/index.css';
+---
+
+<div id="preloader">
+  <div class="kitchen">
+    <div class="pot-wrap">
+      <div class="steam-container">
+        <div class="steam steam-1"></div>
+        <div class="steam steam-2"></div>
+        <div class="steam steam-3"></div>
+      </div>
+      <div class="pot">
+        <div class="pot-body">
+          <div class="bubble bubble-1"></div>
+          <div class="bubble bubble-2"></div>
+          <div class="bubble bubble-3"></div>
+          <div class="bubble bubble-4"></div>
+        </div>
+        <div class="pot-handle-left"></div>
+        <div class="pot-handle-right"></div>
+      </div>
+      <div class="spoon"></div>
+      <div class="flame-container">
+        <div class="flame flame-1"></div>
+        <div class="flame flame-2"></div>
+        <div class="flame flame-3"></div>
+      </div>
+    </div>
+    <p class="loader-text">Cooking up something special<span class="dots"></span></p>
+  </div>
+</div>
+
+<script is:inline>
+  /*
+   * Dismissed as soon as the document is parsed, not on `window.load` + 1.8s.
+   *
+   * The old version waited for every image, font and script to finish and then sat
+   * for another 1,800ms, disappearing at 2,500ms — a fixed tax on every first load,
+   * however fast the page actually was. The page now paints real content from the
+   * server, so the overlay only needs to cover the moment before first paint.
+   */
+  (function () {
+    var MIN_VISIBLE_MS = 250;
+    var start = Date.now();
+
+    function dismiss() {
+      var preloader = document.getElementById('preloader');
+      if (!preloader || preloader.dataset.done) return;
+      preloader.dataset.done = '1';
+
+      // A brief floor stops the overlay flashing in and out on a fast connection.
+      var wait = Math.max(0, MIN_VISIBLE_MS - (Date.now() - start));
+      setTimeout(function () {
+        preloader.classList.add('hidden');
+        setTimeout(function () {
+          preloader.style.display = 'none';
+        }, 600);
+      }, wait);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', dismiss);
+    } else {
+      dismiss();
+    }
+    // Safety net: never let a stalled resource keep the overlay up.
+    window.addEventListener('load', dismiss);
+    setTimeout(dismiss, 3000);
+  })();
+
+  document.addEventListener('astro:before-swap', function (event) {
+    var incoming = event.newDocument.getElementById('preloader');
+    if (incoming) incoming.remove();
+  });
+</script>

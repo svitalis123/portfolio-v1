@@ -1,0 +1,24 @@
+---
+import ProjectPanel from './projects/ProjectPanel.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<!-- `relative` is load-bearing: the heading below is absolutely positioned, and
+     without a positioned ancestor it anchors to <body> instead — which is why
+     "Featured Projects" was painting over the hero at the top of the page. -->
+<section
+  class="projects-track relative flex w-full bg-[#201d1b] text-[#ecc7bc] overflow-hidden"
+  aria-label="Featured projects"
+>
+  <!-- Sits at the left edge of the track, so while the container is pinned and the
+       panels slide underneath it the heading stays in the top-left of the viewport. -->
+  <h2 class="text-4xl font-bold absolute top-8 left-8 z-10">Featured Projects</h2>
+
+  {projects.map((project) => <ProjectPanel project={project} />)}
+</section>

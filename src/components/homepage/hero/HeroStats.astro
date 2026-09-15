@@ -1,0 +1,17 @@
+---
+const STATS = [
+  { value: '4+', label: 'Years Exp.' },
+  { value: '20+', label: 'Projects' },
+];
+---
+
+<dl class="flex gap-6 mt-6 justify-center lg:justify-start a-fade-up" style="--a-delay: 1.4s">
+  {
+    STATS.map((stat) => (
+      <div class="text-center">
+        <dd class="text-2xl font-bold text-[#e34b3a] m-0">{stat.value}</dd>
+        <dt class="text-xs uppercase tracking-wider opacity-50 mt-1">{stat.label}</dt>
+      </div>
+    ))
+  }
+</dl>

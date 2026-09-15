@@ -1,0 +1,84 @@
+#preloader .steam-container {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 50px;
+}
+
+#preloader .steam {
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  height: 20px;
+  background: rgba(236, 199, 188, 0.08);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+#preloader .steam-1 { left: 10px; animation: preloaderSteam 2s ease-out infinite 0s; }
+#preloader .steam-2 { left: 26px; animation: preloaderSteam 2.3s ease-out infinite 0.4s; }
+#preloader .steam-3 { left: 42px; animation: preloaderSteam 1.8s ease-out infinite 0.8s; }
+
+@keyframes preloaderSteam {
+  0% { transform: translateY(0) scaleX(1); opacity: 0; }
+  15% { opacity: 0.5; }
+  50% { transform: translateY(-30px) scaleX(1.8); opacity: 0.3; }
+  100% { transform: translateY(-55px) scaleX(2.5); opacity: 0; }
+}
+
+#preloader .spoon {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  width: 4px;
+  height: 50px;
+  background: linear-gradient(180deg, #ccc 0%, #888 100%);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  animation: preloaderStir 1.5s ease-in-out infinite;
+}
+
+#preloader .spoon::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 8px;
+  background: #999;
+  border-radius: 0 0 6px 6px;
+}
+
+@keyframes preloaderStir {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+}
+
+#preloader .flame-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+#preloader .flame {
+  width: 10px;
+  height: 16px;
+  background: linear-gradient(180deg, #ffbe0b 0%, #e34b3a 60%, #c0392b 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: preloaderFlicker 0.4s ease-in-out infinite alternate;
+}
+
+#preloader .flame-1 { height: 14px; animation-delay: 0s; }
+#preloader .flame-2 { height: 18px; animation-delay: 0.15s; }
+#preloader .flame-3 { height: 12px; animation-delay: 0.3s; }
+
+@keyframes preloaderFlicker {
+  0% { transform: scaleY(1) scaleX(1); opacity: 0.9; }
+  100% { transform: scaleY(1.15) scaleX(0.85); opacity: 1; }
+}

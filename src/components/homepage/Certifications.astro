@@ -1,0 +1,32 @@
+---
+import { ChevronRight } from 'lucide-react';
+import CvCredentials from '@/components/cv/CvCredentials.astro';
+---
+
+<section id="certifications" class="bg-[#201d1b] max-w-[1330px] mx-auto text-[#ecc7bc] p-4 sm:p-6 md:p-8 pb-16">
+  <h2 class="text-3xl sm:text-4xl font-bold mb-2">Certifications</h2>
+  <p class="text-[#ecc7bc]/60 mb-6 sm:mb-8">
+    Cloud, AI infrastructure and leadership programmes.
+  </p>
+
+  <CvCredentials columns={3} />
+
+  <div class="flex justify-center mt-10">
+    <a
+      href="/cv"
+      class="neumorphic-button view-cv max-w-[220px] flex items-center px-6 py-3 rounded-full text-[#ecc7bc] bg-[#2a2624] transition-all duration-300 ease-in-out no-underline"
+    >
+      View full CV
+      <ChevronRight className="ml-2" aria-hidden="true" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .view-cv:hover { transform: scale(1.05); }
+  .view-cv:active { transform: scale(0.95); }
+  @media (prefers-reduced-motion: reduce) {
+    .view-cv:hover,
+    .view-cv:active { transform: none; }
+  }
+</style>

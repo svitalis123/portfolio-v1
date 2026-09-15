@@ -1,4 +1,3 @@
-import React from 'react';
 import { Github, Linkedin, X } from 'lucide-react';
 
 const Header = () => {

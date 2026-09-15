@@ -1,0 +1,89 @@
+---
+import HeroStats from './HeroStats.astro';
+
+interface Props {
+  images: string[];
+}
+
+const { images } = Astro.props;
+
+// The first frame is the largest-contentful paint: eager, high priority, and
+// preloaded from the page head. Later frames are lazy — they are 6s away.
+---
+
+<div class="lg:col-span-6 xl:col-span-7 relative a-scale-in" style="--a-delay: 0.5s">
+  <div class="relative mx-auto lg:ml-auto" style="max-width: 580px">
+    <div class="hero-frame" data-hero-parallax aria-hidden="true"></div>
+
+    <div class="relative rounded-[2rem] overflow-hidden aspect-[3/4]">
+      {
+        images.map((src, index) => (
+          <img
+            src={src}
+            alt={index === 0 ? 'Vitalis Mutwiri' : ''}
+            width="580"
+            height="773"
+            class="hero-photo"
+            data-hero-photo
+            data-active={index === 0 ? 'true' : 'false'}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={index === 0 ? 'high' : 'low'}
+            decoding={index === 0 ? 'sync' : 'async'}
+          />
+        ))
+      }
+
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[#201d1b] via-transparent to-transparent opacity-60"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div
+        class="absolute bottom-6 left-6 backdrop-blur-md bg-[#201d1b]/60 border border-[#ecc7bc]/10 rounded-xl px-4 py-3 a-fade-up"
+        style="--a-delay: 1.2s"
+      >
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse" aria-hidden="true"></div>
+          <span class="text-sm text-[#ecc7bc] font-medium">Available for projects</span>
+        </div>
+      </div>
+    </div>
+
+    <HeroStats />
+  </div>
+</div>
+
+<style>
+  .hero-frame {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e34b3a;
+    opacity: 0.3;
+    border-radius: 2rem;
+    transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+  }
+
+  /* Stacked crossfade: every frame occupies the same box, only opacity changes. */
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+  }
+
+  .hero-photo[data-active='true'] {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-frame { transform: none; }
+    .hero-photo { transition: none; }
+  }
+</style>

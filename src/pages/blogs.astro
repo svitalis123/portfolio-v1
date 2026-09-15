@@ -1,26 +1,26 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { MongoClient } from "mongodb";
-import FeaturedBlogPost from "../components/blogs/FeaturedBlogPost";
-import BlogListingPage from "@/components/blogs/BlogListingPage";
+import Layout from '@/layouts/Layout.astro';
+import FeaturedBlogPost from '@/components/blogs/FeaturedBlogPost.astro';
+import BlogListingPage from '@/components/blogs/BlogListingPage.astro';
+import { listPosts } from '@/services/BlogDataService';
 
-
-
-const client = new MongoClient(import.meta.env.MONGODB_URI);
-let blogPosts = [];
-try {
-  await client.connect();
-  const db = client.db("blogDatabase");
-  const posts = await db.collection("posts").find({}).sort({ createdAt: -1 }).toArray();
-  blogPosts = JSON.parse(JSON.stringify(posts));
-} finally {
-  await client.close();
-}
+const blogPosts = await listPosts();
+const [featured, ...rest] = blogPosts;
 ---
 
-<Layout title="blogs">
-	<main class=" bg-[#201d1b] w-full py-4 lg:py-12 overflow-hidden text-[#ecc7bc]">
-    <FeaturedBlogPost  blog={blogPosts[0]}  client:load/>
-		<BlogListingPage blogs={blogPosts}  client:load/>
-	</main>
+<Layout title="Blogs" description="Writing on software engineering, cloud and building for the web.">
+  <main class="bg-[#201d1b] w-full py-4 lg:py-12 overflow-hidden text-[#ecc7bc]">
+    {
+      featured ? (
+        <>
+          <FeaturedBlogPost blog={featured} />
+          <BlogListingPage blogs={rest} />
+        </>
+      ) : (
+        <p class="max-w-[1330px] mx-auto px-4 py-24 text-center text-lg opacity-70">
+          No posts published yet — check back soon.
+        </p>
+      )
+    }
+  </main>
 </Layout>

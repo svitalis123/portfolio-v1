@@ -1,0 +1,43 @@
+---
+// Decorative background sketches for a project panel.
+interface Props {
+  kind: 'whiteboard' | 'kanban' | 'ruler';
+}
+
+const { kind } = Astro.props;
+---
+
+{
+  kind === 'whiteboard' && (
+    <svg viewBox="0 0 100 120" class="w-32 h-40 opacity-20" aria-hidden="true">
+      <rect x="10" y="10" width="80" height="60" fill="#492c49" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="50" y1="70" x2="40" y2="110" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="50" y1="70" x2="60" y2="110" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="30" y1="110" x2="70" y2="110" stroke="#ecc7bc" stroke-width="2" />
+    </svg>
+  )
+}
+
+{
+  kind === 'kanban' && (
+    <svg viewBox="0 0 120 80" class="w-40 h-28 opacity-20" aria-hidden="true">
+      <rect x="0" y="0" width="120" height="80" fill="#492c49" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="40" y1="0" x2="40" y2="80" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="80" y1="0" x2="80" y2="80" stroke="#ecc7bc" stroke-width="2" />
+      <rect x="5" y="5" width="30" height="10" fill="#e34b3a" stroke="#ecc7bc" stroke-width="1" />
+      <rect x="45" y="5" width="30" height="10" fill="#e34b3a" stroke="#ecc7bc" stroke-width="1" />
+      <rect x="85" y="5" width="30" height="10" fill="#e34b3a" stroke="#ecc7bc" stroke-width="1" />
+    </svg>
+  )
+}
+
+{
+  kind === 'ruler' && (
+    <svg viewBox="0 0 100 87" class="w-24 h-20 opacity-20" aria-hidden="true">
+      <polygon points="0,87 100,87 50,0" fill="#492c49" stroke="#ecc7bc" stroke-width="2" />
+      <line x1="10" y1="77" x2="90" y2="77" stroke="#ecc7bc" stroke-width="1" />
+      <line x1="20" y1="67" x2="80" y2="67" stroke="#ecc7bc" stroke-width="1" />
+      <line x1="30" y1="57" x2="70" y2="57" stroke="#ecc7bc" stroke-width="1" />
+    </svg>
+  )
+}

@@ -1,0 +1,47 @@
+---
+interface Props {
+  first: string;
+  last: string;
+}
+
+const { first, last } = Astro.props;
+
+// Letters animate on a per-index delay, the same stagger the JS version produced.
+const letters = (word: string, offset: number) =>
+  [...word].map((char, index) => ({ char, delay: (index + offset) * 0.05 }));
+---
+
+<div class="overflow-hidden">
+  <h1
+    class="text-[clamp(3rem,8vw,7rem)] font-black leading-[0.9] tracking-tight"
+    aria-label={`${first} ${last}`}
+  >
+    <span aria-hidden="true">
+      <span class="block overflow-hidden">
+        {
+          letters(first, 0).map(({ char, delay }) => (
+            <span class="inline-block a-rise-in" style={`--a-delay: ${delay}s`}>
+              {char}
+            </span>
+          ))
+        }
+      </span>
+      <span class="block overflow-hidden hero-outline">
+        {
+          letters(last, first.length).map(({ char, delay }) => (
+            <span class="inline-block a-rise-in" style={`--a-delay: ${delay}s`}>
+              {char}
+            </span>
+          ))
+        }
+      </span>
+    </span>
+  </h1>
+</div>
+
+<style>
+  .hero-outline span {
+    -webkit-text-stroke: 1.5px #ecc7bc;
+    color: transparent;
+  }
+</style>

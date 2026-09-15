@@ -1,11 +1,10 @@
 ---
-import UploadBlog from "@/components/editor/EditorHomepage/UploadBlog";
-import Layout from "@/layouts/Layout.astro";
+import Layout from '@/layouts/Layout.astro';
+import UploadBlog from '@/components/editor/EditorHomepage/UploadBlog';
 ---
 
-<Layout title="vitalis">
-  <main class="bg-primary text-white h-full">
-    <UploadBlog  client:load/>
+<Layout title="Admin — New post">
+  <main class="bg-primary text-white min-h-screen py-8">
+    <UploadBlog client:load />
   </main>
-  
 </Layout>

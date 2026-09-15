@@ -1,0 +1,62 @@
+---
+import { ChevronRight } from 'lucide-react';
+import ProjectDoodles from './ProjectDoodles.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<section
+  class="panel w-screen h-screen flex-shrink-0 flex flex-col justify-center items-center p-8 relative"
+>
+  <div class="absolute hidden md:block left-10 top-20 z-0">
+    <ProjectDoodles kind="whiteboard" />
+  </div>
+  <div class="absolute hidden md:block right-10 top-10 z-0">
+    <ProjectDoodles kind="ruler" />
+  </div>
+  <div class="absolute hidden md:block right-20 bottom-40 z-0">
+    <ProjectDoodles kind="kanban" />
+  </div>
+
+  <p class="text-2xl font-bold text-[#e34b3a] mb-4">{project.type.toUpperCase()}</p>
+  <h3 class="text-4xl md:text-6xl font-bold mb-6 text-[#e34b3a] text-center">{project.title}</h3>
+
+  <p class="text-xl mb-8 max-w-2xl text-center">{project.description}</p>
+
+  <ul class="flex flex-wrap justify-center gap-4 mb-12 list-none p-0">
+    {
+      project.technologies.map((tech) => (
+        <li class="bg-[#492c49] text-[#ecc7bc] px-4 py-2 rounded-full">{tech}</li>
+      ))
+    }
+  </ul>
+
+  {
+    /* Several projects have no public URL; those panels simply end at the stack. */
+    project.link && (
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="neumorphic-button project-cta flex items-center px-6 py-3 rounded-full text-[#ecc7bc] bg-[#2a2624] transition-all duration-300 ease-in-out no-underline"
+      >
+        Learn more about {project.title}
+        <ChevronRight className="ml-2" aria-hidden="true" />
+      </a>
+    )
+  }
+</section>
+
+<style>
+  .project-cta:hover { transform: scale(1.05); }
+  .project-cta:active { transform: scale(0.95); }
+  @media (prefers-reduced-motion: reduce) {
+    .project-cta:hover,
+    .project-cta:active { transform: none; }
+  }
+</style>

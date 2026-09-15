@@ -1,0 +1,80 @@
+---
+import { ChevronRight } from 'lucide-react';
+import { getInitials } from '@/lib/blogDisplay';
+import type { BlogListItem } from '@/services/blogMappers';
+
+interface Props {
+  blogPosts: BlogListItem[];
+}
+
+const { blogPosts } = Astro.props;
+---
+
+{
+  blogPosts.length > 0 && (
+    <div id="blog" class="bg-[#201d1b] max-w-[1330px] mx-auto text-gray-100 p-4 sm:p-6 md:p-8">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-2">Blogs</h2>
+      <p class="text-gray-300 mb-6 sm:mb-8">
+        Discover insightful resources and expert advice from me.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {blogPosts.map((blog, index) => (
+          <div class="a-fade-up" style={`--a-delay: ${index * 0.1}s`}>
+            <a href={`/blogs/${blog.slug}`} class="no-underline hover:no-underline block h-full">
+              <div class="home-blog-card bg-[#2c2824] border border-gray-700 rounded-lg h-full flex flex-col">
+                {blog.coverImage && (
+                  <img
+                    src={blog.coverImage}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full h-48 object-cover rounded-t-lg"
+                  />
+                )}
+
+                <div class="p-4 flex-grow">
+                  <h3 class="text-xl font-semibold mb-2 text-gray-100">{blog.title}</h3>
+                  <p class="text-gray-300 text-sm">{blog.excerpt}</p>
+                </div>
+
+                <div class="p-4 flex items-center">
+                  <span class="flex h-8 w-8 mr-2 shrink-0 items-center justify-center rounded-full bg-[#3d3731] text-[#000] text-xs font-medium">
+                    {getInitials(blog.author)}
+                  </span>
+                  <span class="text-sm text-gray-300">{blog.author}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex justify-center my-4">
+        <a
+          href="/blogs"
+          class="neumorphic-button all-blogs max-w-[200px] flex items-center px-6 py-3 rounded-full text-[#ecc7bc] bg-[#2a2624] transition-all duration-300 ease-in-out no-underline"
+        >
+          All Blogs
+          <ChevronRight className="ml-2" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .home-blog-card {
+    transition: transform 0.25s ease;
+  }
+  .home-blog-card:hover {
+    transform: translateY(-5px) scale(1.03);
+  }
+  .all-blogs:hover { transform: scale(1.05); }
+  .all-blogs:active { transform: scale(0.95); }
+  @media (prefers-reduced-motion: reduce) {
+    .home-blog-card:hover,
+    .all-blogs:hover,
+    .all-blogs:active { transform: none; }
+  }
+</style>

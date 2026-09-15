@@ -1,0 +1,78 @@
+/**
+ * Entrance animations in CSS rather than JavaScript.
+ *
+ * framer-motion renders its `initial` state into the SSR markup, so a page whose
+ * intro is JS-driven ships as `opacity: 0` and stays blank until React hydrates.
+ * These run off the stylesheet instead, so the first paint is the real content.
+ *
+ * Stagger with `style="--a-delay: 0.3s"` on the element.
+ */
+
+@keyframes aFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes aRiseIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.a-fade-up,
+.a-fade-in,
+.a-rise-in,
+.a-scale-in {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: var(--a-delay, 0s);
+  animation-fill-mode: both;
+}
+
+.a-fade-up { animation-name: aFadeUp; }
+.a-fade-in { animation-name: aFadeIn; }
+.a-rise-in { animation-name: aRiseIn; animation-duration: 0.7s; }
+.a-scale-in { animation-name: aScaleIn; animation-duration: 1s; }
+
+/* Never let an animation be the reason content is invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .a-fade-up,
+  .a-fade-in,
+  .a-rise-in,
+  .a-scale-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

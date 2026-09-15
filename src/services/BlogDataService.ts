@@ -1,90 +1,73 @@
-// src/services/BlogDataService.ts
-import { MongoClient, ObjectId } from 'mongodb';
+import { ObjectId, type Collection, type Document, type Filter } from 'mongodb';
+import clientPromise from '@/lib/mongodb';
+import { slugify } from '@/models/BlogPost';
+import { sanitizeRichTextContent } from '@/utils/htmlSanitizer';
+import { toFullPost, toListItem, type BlogListItem, type BlogPost } from './blogMappers';
+import { buildBlogSections } from './blogSections';
 
-export class BlogDataService {
-  private static readonly MONGODB_URI = import.meta.env.MONGODB_URI;
-  private static readonly DB_NAME = "blogDatabase";
-  private static readonly COLLECTION_NAME = "posts";
+const DB_NAME = 'blogDatabase';
+const COLLECTION_NAME = 'posts';
 
-  private static async getClient() {
-    const client = new MongoClient(this.MONGODB_URI);
-    await client.connect();
-    return client;
+/**
+ * Only published posts are ever served publicly.
+ *
+ * `isPublished` was written by the admin form but read by nothing, so every post
+ * predating this change sat at `false` while still being publicly visible. Those
+ * 8 documents were backfilled to `true`, which is why a strict check is safe here.
+ */
+const PUBLISHED: Filter<Document> = { isPublished: true };
+
+export async function postsCollection(): Promise<Collection<Document>> {
+  const client = await clientPromise;
+  return client.db(DB_NAME).collection(COLLECTION_NAME);
+}
+
+export async function listPosts({ limit }: { limit?: number } = {}): Promise<BlogListItem[]> {
+  const collection = await postsCollection();
+
+  let cursor = collection
+    .find(PUBLISHED, {
+      // `content` is fetched only to derive the cover image; toListItem drops it
+      // again so it never reaches the browser.
+      projection: {
+        title: 1, excerpt: 1, slug: 1, author: 1, publishDate: 1,
+        createdAt: 1, categories: 1, tags: 1, content: 1,
+      },
+    })
+    .sort({ publishDate: -1, _id: -1 });
+
+  if (limit) {
+    cursor = cursor.limit(limit);
   }
 
-  static async getAllPosts(limit?: number) {
-    const client = await this.getClient();
-    
-    try {
-      const db = client.db(this.DB_NAME);
-      const collection = db.collection(this.COLLECTION_NAME);
-      
-      // Create a query pipeline
-      let query = collection.find({})
-        // Sort by publishDate in descending order (newest first)
-        // If publishDate doesn't exist, fall back to _id
-        .sort({
-          publishDate: -1,
-          _id: -1
-        });
-      
-      // Apply limit if specified
-      if (limit) {
-        query = query.limit(limit);
-      }
-      
-      const blogPosts = await query.toArray();
-      
-      return JSON.parse(JSON.stringify(blogPosts));
-    } finally {
-      await client.close();
+  return (await cursor.toArray()).map(toListItem);
+}
+
+/**
+ * Look a post up by slug, falling back to its ObjectId so links minted before
+ * slugs existed keep working. A legacy hit backfills the slug on the way through.
+ */
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  const collection = await postsCollection();
+  let document = await collection.findOne({ ...PUBLISHED, slug });
+
+  if (!document && ObjectId.isValid(slug)) {
+    document = await collection.findOne({ ...PUBLISHED, _id: new ObjectId(slug) });
+
+    if (document && !document.slug) {
+      const generated = slugify(document.title);
+      await collection.updateOne(
+        { _id: document._id },
+        { $set: { slug: generated, updatedAt: new Date() } }
+      );
+      document.slug = generated;
     }
   }
 
-  static async getPostById(id: string) {
-    const client = await this.getClient();
-    
-    try {
-      const db = client.db(this.DB_NAME);
-      const collection = db.collection(this.COLLECTION_NAME);
-      const post = await collection.findOne({ _id: new ObjectId(id) });
-      
-      return post ? JSON.parse(JSON.stringify(post)) : null;
-    } finally {
-      await client.close();
-    }
-  }
+  if (!document) return null;
 
-  static async getStaticPaths() {
-    const blogPosts = await this.getAllPosts();
-    
-    return blogPosts.map((blogPost) => ({
-      params: { slug: blogPost._id.toString() },
-      props: { blogPost },
-    }));
-  }
-
-  // New method to get latest posts
-  static async getLatestPosts(count: number = 5) {
-    return this.getAllPosts(count);
-  }
-
-  // New method to get posts by tag
-  static async getPostsByTag(tag: string) {
-    const client = await this.getClient();
-    
-    try {
-      const db = client.db(this.DB_NAME);
-      const collection = db.collection(this.COLLECTION_NAME);
-      
-      const blogPosts = await collection
-        .find({ tags: tag })
-        .sort({ publishDate: -1, _id: -1 })
-        .toArray();
-      
-      return JSON.parse(JSON.stringify(blogPosts));
-    } finally {
-      await client.close();
-    }
-  }
+  // Sanitised again on read: every post predating the authenticated upload endpoint
+  // was written through a publicly writable API, so stored HTML is not trusted.
+  // Split into sections here too, so the reader island needs no DOM at render time.
+  return toFullPost(document, buildBlogSections(sanitizeRichTextContent(document.content)));
 }

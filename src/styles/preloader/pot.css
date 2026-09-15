@@ -1,0 +1,61 @@
+#preloader .pot {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#preloader .pot-body {
+  width: 80px;
+  height: 52px;
+  background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid #666;
+}
+
+#preloader .pot-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 4px;
+  right: 4px;
+  bottom: 8px;
+  background: linear-gradient(180deg, #e34b3a 0%, #c0392b 60%, #8b2a1e 100%);
+  border-radius: 0 0 12px 12px;
+}
+
+#preloader .pot-handle-left,
+#preloader .pot-handle-right {
+  position: absolute;
+  top: 4px;
+  width: 14px;
+  height: 10px;
+  border: 3px solid #666;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+
+#preloader .pot-handle-left { left: -16px; }
+#preloader .pot-handle-right { right: -16px; }
+
+#preloader .bubble {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 2;
+}
+
+#preloader .bubble-1 { bottom: 10px; left: 18px; animation: preloaderBubble 1.2s ease-in infinite 0s; }
+#preloader .bubble-2 { bottom: 8px; left: 38px; animation: preloaderBubble 1.5s ease-in infinite 0.3s; }
+#preloader .bubble-3 { bottom: 12px; left: 55px; width: 4px; height: 4px; animation: preloaderBubble 1s ease-in infinite 0.6s; }
+#preloader .bubble-4 { bottom: 6px; left: 28px; width: 5px; height: 5px; animation: preloaderBubble 1.8s ease-in infinite 0.9s; }
+
+@keyframes preloaderBubble {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-35px) scale(0.3); opacity: 0; }
+}

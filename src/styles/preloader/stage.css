@@ -1,0 +1,60 @@
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #201d1b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#preloader .kitchen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+#preloader .pot-wrap {
+  position: relative;
+  width: 120px;
+  height: 140px;
+}
+
+#preloader .loader-text {
+  color: #ecc7bc;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+#preloader .dots::after {
+  content: '';
+  animation: preloaderDots 1.5s steps(3) infinite;
+}
+
+@keyframes preloaderDots {
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+}
+
+/* Users who ask for reduced motion get the brand colour, not a simmering pot. */
+@media (prefers-reduced-motion: reduce) {
+  #preloader .bubble,
+  #preloader .steam,
+  #preloader .spoon,
+  #preloader .flame,
+  #preloader .dots::after {
+    animation: none;
+  }
+}
