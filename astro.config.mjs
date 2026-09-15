@@ -16,4 +16,17 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'viewport',
   },
+  vite: {
+    ssr: {
+      // `sanitize-html` is CommonJS and `require()`s `htmlparser2`, which is ESM-only
+      // from v12. Node 22.12+ allows require() of ESM, so this works locally — but
+      // Vercel's function runtime uses a loader that does not, and every page touching
+      // the sanitizer died with ERR_REQUIRE_ESM. Bundling it resolves the dependency at
+      // build time, so no require() of an ES module survives into the deployed output.
+      // htmlparser2 and its helpers are bundled too: leaving them external made
+      // the bundler emit a runtime require() for them from the wrapped CommonJS
+      // module, which is the same failure one level down.
+      noExternal: ['sanitize-html', 'htmlparser2', 'domutils', 'dom-serializer', 'domhandler', 'entities'],
+    },
+  },
 });
