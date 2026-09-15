@@ -26,7 +26,27 @@ export default defineConfig({
       // htmlparser2 and its helpers are bundled too: leaving them external made
       // the bundler emit a runtime require() for them from the wrapped CommonJS
       // module, which is the same failure one level down.
-      noExternal: ['sanitize-html', 'htmlparser2', 'domutils', 'dom-serializer', 'domhandler', 'entities'],
+      // The whole sanitize-html tree is bundled, not just the ESM-only parts.
+      // Bundling removes a package from Vercel's dependency trace, so anything left
+      // external here stops being shipped to the function while the bundled code
+      // still require()s it ("Cannot find module 'is-plain-object'").
+      noExternal: [
+        'sanitize-html',
+        'htmlparser2',
+        'domutils',
+        'dom-serializer',
+        'domhandler',
+        'entities',
+        'deepmerge',
+        'is-plain-object',
+        'launder',
+        'parse-srcset',
+        'postcss',
+        'nanoid',
+        'picocolors',
+        'source-map-js',
+        'dayjs',
+      ],
     },
   },
 });
